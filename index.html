@@ -370,9 +370,17 @@
           erro.style.display = "block";
           return;
         }
-        for (let k in valores) valores[k] = 0;
-        atualizarResumo();
-        alert("Turno fechado e valores zerados.");
+
+        // Confirmação antes de zerar o caixa
+        if (
+          confirm(
+            "⚠️ Tem certeza que deseja fechar o turno e zerar todos os valores?"
+          )
+        ) {
+          for (let k in valores) valores[k] = 0;
+          atualizarResumo();
+          alert("Turno fechado e valores zerados.");
+        }
       });
 
       atualizarResumo();
