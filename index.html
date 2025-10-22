@@ -3,6 +3,28 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <!-- METADADOS PWA -->
+    <meta name="theme-color" content="#0b63d4" />
+    <meta
+      name="description"
+      content="Sistema de Fechamento de Caixa para Postos de Combustível"
+    />
+    <link
+      rel="manifest"
+      href="data:application/manifest+json,%7B%22name%22%3A%22Fechamento%20de%20Caixa%22%2C%22short_name%22%3A%22FechamentoCaixa%22%2C%22description%22%3A%22Sistema%20de%20fechamento%20de%20caixa%20para%20postos%20de%20combust%C3%ADvel%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f6fbff%22%2C%22theme_color%22%3A%22%230b63d4%22%2C%22orientation%22%3A%22portrait%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20100%20100'%3E%3Crect%20width%3D'100'%20height%3D'100'%20fill%3D'%230b63d4'%20rx%3D'20'%2F%3E%3Ctext%20x%3D'50'%20y%3D'70'%20font-family%3D'Arial'%20font-size%3D'60'%20text-anchor%3D'middle'%20fill%3D'white'%3E%F0%9F%92%B0%3C%2Ftext%3E%3C%2Fsvg%3E%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%2C%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20100%20100'%3E%3Crect%20width%3D'100'%20height%3D'100'%20fill%3D'%230b63d4'%20rx%3D'20'%2F%3E%3Ctext%20x%3D'50'%20y%3D'70'%20font-family%3D'Arial'%20font-size%3D'60'%20text-anchor%3D'middle'%20fill%3D'white'%3E%F0%9F%92%B0%3C%2Ftext%3E%3C%2Fsvg%3E%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D"
+    />
+
+    <!-- ICONES PWA -->
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>"
+    />
+
     <title>Fechamento de Caixa</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
@@ -26,6 +48,11 @@
         color: #222;
         padding: 20px 0;
         overflow-y: auto;
+        /* Prevenir zoom em iOS */
+        touch-action: manipulation;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
       }
 
       .card {
@@ -65,6 +92,9 @@
         font-size: 14px;
         box-sizing: border-box;
         transition: border-color 0.2s;
+        /* Melhorar experiência em mobile */
+        -webkit-appearance: none;
+        appearance: none;
       }
 
       input:focus {
@@ -81,6 +111,9 @@
         font-size: 13px;
         transition: 0.2s;
         font-weight: 500;
+        /* Melhorar toque em mobile */
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
       }
 
       button:hover {
@@ -90,7 +123,7 @@
 
       .add {
         background: #28a745;
-        width: 100%; /* Agora ocupa 100% da largura */
+        width: 100%;
       }
 
       .row {
@@ -162,6 +195,18 @@
       #fecharTurno {
         background: #2c3e50;
         margin-top: 12px;
+      }
+
+      /* BOTÃO INSTALAR PWA */
+      #installButton {
+        background: #ff6b00;
+        width: 100%;
+        margin-top: 8px;
+        padding: 12px;
+        font-size: 14px;
+        border-radius: 8px;
+        font-weight: 600;
+        display: none; /* Inicialmente escondido */
       }
 
       .erro {
@@ -249,10 +294,16 @@
         body {
           padding: 10px 0;
           align-items: flex-start;
+          /* Prevenir bounce scroll no iOS */
+          position: fixed;
+          width: 100%;
+          height: 100%;
         }
 
         .card {
           padding: 16px;
+          max-height: calc(100vh - 20px);
+          overflow-y: auto;
         }
 
         h1 {
@@ -296,10 +347,44 @@
         }
 
         #baixarPDF,
-        #fecharTurno {
+        #fecharTurno,
+        #installButton {
           padding: 10px;
           font-size: 13px;
           margin-top: 12px;
+        }
+      }
+
+      /* Loading para PWA */
+      .loading {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.9);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      .loading-spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #0b63d4;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
         }
       }
     </style>
@@ -308,6 +393,14 @@
   </head>
 
   <body>
+    <!-- Loading para instalação -->
+    <div class="loading" id="loading">
+      <div class="loading-spinner"></div>
+      <p style="margin-top: 20px; color: #0b63d4; font-weight: 600">
+        Instalando App...
+      </p>
+    </div>
+
     <div class="card">
       <h1>Fechamento de Caixa</h1>
 
@@ -355,7 +448,10 @@
       <button id="baixarPDF">Baixar PDF</button>
       <button id="fecharTurno">Fechar Turno (Zerar)</button>
 
-      <!-- HISTÓRICO AGORA FICA ABAIXO DOS BOTÕES -->
+      <!-- BOTÃO PARA INSTALAR O APP -->
+      <button id="installButton">📲 Instalar App no Celular</button>
+
+      <!-- HISTÓRICO -->
       <div class="historico">
         <h3>Últimos Valores Adicionados</h3>
         <div class="lista-historico" id="lista-historico"></div>
@@ -363,20 +459,53 @@
     </div>
 
     <script>
-      // ======= Ajuste de data para o fuso horário do Brasil =======
+      // ======= PWA INSTALLATION =======
+      let deferredPrompt;
+      const installButton = document.getElementById("installButton");
+      const loading = document.getElementById("loading");
+
+      // Mostrar botão de instalação quando possível
+      window.addEventListener("beforeinstallprompt", (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installButton.style.display = "block";
+
+        installButton.addEventListener("click", async () => {
+          loading.style.display = "flex";
+          installButton.style.display = "none";
+
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+
+          loading.style.display = "none";
+          deferredPrompt = null;
+        });
+      });
+
+      // Esconder botão se já estiver instalado
+      window.addEventListener("appinstalled", () => {
+        installButton.style.display = "none";
+        deferredPrompt = null;
+        alert("App instalado com sucesso! 🎉");
+      });
+
+      // Verificar se já está instalado
+      if (window.matchMedia("(display-mode: standalone)").matches) {
+        installButton.style.display = "none";
+      }
+
+      // ======= AJUSTE DE DATA =======
       function dataAtualBrasil() {
         const agora = new Date();
-        // Obtém diferença de fuso (minutos) e converte para milissegundos
         const offsetMs = agora.getTimezoneOffset() * 60000;
-        // Corrige para UTC-3 (horário de Brasília)
         const brasil = new Date(
           agora.getTime() - offsetMs - 3 * 60 * 60 * 1000
         );
         return brasil.toISOString().slice(0, 10);
       }
-      const hoje = dataAtualBrasil(); // ✅ Agora a data será correta no Brasil 🇧🇷
-      // =============================================================
+      const hoje = dataAtualBrasil();
 
+      // ======= SISTEMA EXISTENTE =======
       let frentista = localStorage.getItem("frentista");
       if (frentista) {
         if (
@@ -399,7 +528,6 @@
         pix: parseFloat(localStorage.getItem("pix")) || 0,
       };
 
-      // Array para armazenar o histórico de operações
       let historico = JSON.parse(localStorage.getItem("historico")) || [];
 
       const fmtBR = (v) =>
@@ -408,7 +536,6 @@
           currency: "BRL",
         }).format(v);
 
-      // FUNÇÃO: Atualizar a lista de histórico na tela
       function atualizarHistorico() {
         const lista = document.getElementById("lista-historico");
 
@@ -418,7 +545,6 @@
           return;
         }
 
-        // Mostrar apenas os últimos 10 itens (do mais recente para o mais antigo)
         const historicoRecente = historico.slice(-10).reverse();
 
         lista.innerHTML = historicoRecente
@@ -445,7 +571,6 @@
           .join("");
       }
 
-      // FUNÇÃO: Adicionar item ao histórico
       function adicionarAohistorico(tipo, valor, operacao) {
         const agora = new Date();
         const hora = agora.toLocaleTimeString("pt-BR", {
@@ -453,7 +578,6 @@
           minute: "2-digit",
         });
 
-        // CORREÇÃO ORTOGRÁFICA: Adicionar acento em "Cartão"
         let tipoFormatado = tipo.charAt(0).toUpperCase() + tipo.slice(1);
         if (tipoFormatado === "Cartao") {
           tipoFormatado = "Cartão";
@@ -462,12 +586,11 @@
         historico.push({
           tipo: tipoFormatado,
           valor: valor,
-          operacao: operacao, // 'adicao' ou 'subtracao'
+          operacao: operacao,
           hora: hora,
           timestamp: agora.getTime(),
         });
 
-        // Manter apenas os últimos 50 itens no histórico
         if (historico.length > 50) {
           historico = historico.slice(-50);
         }
@@ -476,15 +599,12 @@
         atualizarHistorico();
       }
 
-      // FUNÇÃO: Remover item do histórico e ajustar os valores
       function removerDoHistorico(index) {
         if (index < 0 || index >= historico.length) return;
 
         const item = historico[index];
 
-        // Reverter a operação no valor total
         if (item.operacao === "adicao") {
-          // CORREÇÃO: Converter tipo com acento de volta para sem acento
           let tipoCorrigido = item.tipo.toLowerCase();
           if (tipoCorrigido === "cartão") {
             tipoCorrigido = "cartao";
@@ -501,11 +621,9 @@
           valores[tipoCorrigido] += item.valor;
         }
 
-        // Remover do histórico
         historico.splice(index, 1);
         localStorage.setItem("historico", JSON.stringify(historico));
 
-        // Atualizar a tela
         atualizarResumo();
         atualizarHistorico();
       }
@@ -541,8 +659,6 @@
         atualizarResumo();
       }
 
-      // FUNÇÃO REMOVIDA: subtrairValor - não é mais necessária
-
       document.getElementById("baixarPDF").addEventListener("click", () => {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF({ unit: "pt", format: "a4" });
@@ -557,8 +673,8 @@
               colSpan: 2,
               styles: {
                 halign: "center",
-                fillColor: [11, 99, 212], // Azul mais escuro
-                textColor: [255, 255, 255], // Texto branco
+                fillColor: [11, 99, 212],
+                textColor: [255, 255, 255],
                 fontStyle: "bold",
                 fontSize: 14,
               },
@@ -566,7 +682,7 @@
           ],
           ["Frentista", frentista],
           ["Dinheiro", fmtBR(valores.dinheiro)],
-          ["Cartão", fmtBR(valores.cartao)], // CORREÇÃO ORTOGRÁFICA NO PDF
+          ["Cartão", fmtBR(valores.cartao)],
           ["Vale", fmtBR(valores.vale)],
           ["Pix", fmtBR(valores.pix)],
           [
@@ -574,15 +690,15 @@
               content: "Total",
               styles: {
                 fontStyle: "bold",
-                fillColor: [240, 240, 240], // Cinza claro
+                fillColor: [240, 240, 240],
               },
             },
             {
               content: fmtBR(total),
               styles: {
                 fontStyle: "bold",
-                fillColor: [240, 240, 240], // Cinza claro
-                textColor: [46, 125, 50], // Verde escuro
+                fillColor: [240, 240, 240],
+                textColor: [46, 125, 50],
               },
             },
           ],
@@ -603,26 +719,25 @@
           },
           columnStyles: {
             0: {
-              cellWidth: 180, // Coluna mais estreita
+              cellWidth: 180,
               fontStyle: "bold",
               halign: "left",
-              fillColor: [250, 250, 250], // Fundo levemente cinza
+              fillColor: [250, 250, 250],
             },
             1: {
-              cellWidth: 180, // Coluna mais estreita
+              cellWidth: 180,
               halign: "right",
-              fillColor: [255, 255, 255], // Fundo branco
+              fillColor: [255, 255, 255],
             },
           },
           margin: {
-            left: (doc.internal.pageSize.getWidth() - 360) / 2, // Centralizado com largura menor
+            left: (doc.internal.pageSize.getWidth() - 360) / 2,
             right: (doc.internal.pageSize.getWidth() - 360) / 2,
           },
           tableLineWidth: 0.5,
           tableLineColor: [200, 200, 200],
         });
 
-        // Adicionar cabeçalho personalizado
         doc.setFontSize(20);
         doc.setFont("helvetica", "bold");
         doc.setTextColor(11, 99, 212);
@@ -653,9 +768,18 @@
         }
       });
 
-      // Inicializar a aplicação
+      // Inicializar
       atualizarResumo();
       atualizarHistorico();
+
+      // Prevenir comportamento padrão de refresh em PWA
+      window.addEventListener("beforeunload", (e) => {
+        if (historico.length > 0) {
+          e.preventDefault();
+          e.returnValue =
+            "Você tem dados não salvos. Tem certeza que deseja sair?";
+        }
+      });
     </script>
   </body>
 </html>
