@@ -1,152 +1,277 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Fechamento de Caixa</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-  <style>
-    html, body {margin:0; padding:0; height:100%;}
-    body {
-      font-family:"Poppins",sans-serif;
-      background:#f6fbff;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      height:100vh;
-      color:#222;
-    }
-    .card {
-      background:#fff;
-      border-radius:12px;
-      padding:16px;
-      width:95%;
-      max-width:650px;
-      box-shadow:0 4px 20px rgba(0,0,0,0.1);
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      max-height:100vh;
-      box-sizing:border-box;
-    }
-    h1 {color:#0b63d4; font-size:20px; text-align:center; margin-bottom:12px;}
-    label {display:block; margin-bottom:4px; color:#333; font-weight:500; font-size:14px;}
-    input {width:100%; padding:8px; border-radius:6px; border:1px solid #ddd; font-size:13px; box-sizing:border-box;}
-    button {
-      padding:8px 10px;
-      border:none;
-      border-radius:6px;
-      color:#fff;
-      cursor:pointer;
-      font-size:12px;
-      transition:0.2s;
-    }
-    button:hover {opacity:0.9;}
-    .add {background:#28a745; width:48%;}
-    .sub {background:#dc3545; width:48%;}
-    .row {display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px;}
-    .btns {display:flex; justify-content:space-between; margin-top:4px;}
-    .totais {background:#eef6ff; padding:10px; border-radius:8px; margin-top:12px;}
-    table {width:100%; border-collapse:collapse;}
-    td {padding:4px 0; font-size:13px;}
-    td:first-child {text-align:left; color:#555;}
-    td:last-child {text-align:right; font-weight:600; color:#222;}
-    #baixarPDF, #fecharTurno {background:#0b63d4; width:100%; margin-top:8px; padding:10px; font-size:13px; border-radius:6px;}
-    #fecharTurno {background:#111;}
-    .erro {display:none; color:#d32f2f; font-size:12px; margin-top:4px;}
-    @media (max-width:480px){
-      h1{font-size:18px;}
-      input{padding:6px; font-size:12px;}
-      .btns button{font-size:11px; padding:6px;}
-      .totais{padding:8px; font-size:12px;}
-    }
-  </style>
-  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.28/dist/jspdf.plugin.autotable.min.js"></script>
-</head>
-<body>
-<div class="card">
-  <h1>Fechamento de Caixa</h1>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Fechamento de Caixa</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
 
-  <div class="row">
-    <div>
-      <label>Dinheiro (R$)</label>
-      <input id="dinheiro" type="number" step="0.01" placeholder="0.00" />
-      <div class="btns">
-        <button class="add" onclick="adicionarValor('dinheiro')">+</button>
-        <button class="sub" onclick="subtrairValor('dinheiro')">–</button>
+      body {
+        font-family: "Poppins", sans-serif;
+        background: #f6fbff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        color: #222;
+      }
+
+      .card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 16px;
+        width: 95%;
+        max-width: 650px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        max-height: 100vh;
+        box-sizing: border-box;
+      }
+
+      h1 {
+        color: #0b63d4;
+        font-size: 20px;
+        text-align: center;
+        margin-bottom: 12px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 4px;
+        color: #333;
+        font-weight: 500;
+        font-size: 14px;
+      }
+
+      input {
+        width: 100%;
+        padding: 8px;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+        font-size: 13px;
+        box-sizing: border-box;
+      }
+
+      button {
+        padding: 8px 10px;
+        border: none;
+        border-radius: 6px;
+        color: #fff;
+        cursor: pointer;
+        font-size: 12px;
+        transition: 0.2s;
+      }
+
+      button:hover {
+        opacity: 0.9;
+      }
+
+      .add {
+        background: #28a745;
+        width: 48%;
+      }
+
+      .sub {
+        background: #dc3545;
+        width: 48%;
+      }
+
+      .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-top: 12px;
+      }
+
+      .btns {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 4px;
+      }
+
+      .totais {
+        background: #eef6ff;
+        padding: 10px;
+        border-radius: 8px;
+        margin-top: 12px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      td {
+        padding: 4px 0;
+        font-size: 13px;
+      }
+
+      td:first-child {
+        text-align: left;
+        color: #555;
+      }
+
+      td:last-child {
+        text-align: right;
+        font-weight: 600;
+        color: #222;
+      }
+
+      #baixarPDF,
+      #fecharTurno {
+        background: #0b63d4;
+        width: 100%;
+        margin-top: 8px;
+        padding: 10px;
+        font-size: 13px;
+        border-radius: 6px;
+      }
+
+      #fecharTurno {
+        background: #111;
+      }
+
+      .erro {
+        display: none;
+        color: #d32f2f;
+        font-size: 12px;
+        margin-top: 4px;
+      }
+
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 18px;
+        }
+
+        input {
+          padding: 6px;
+          font-size: 12px;
+        }
+
+        .btns button {
+          font-size: 11px;
+          padding: 6px;
+        }
+
+        .totais {
+          padding: 8px;
+          font-size: 12px;
+        }
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.28/dist/jspdf.plugin.autotable.min.js"></script>
+  </head>
+
+  <body>
+    <div class="card">
+      <h1>Fechamento de Caixa</h1>
+
+      <div class="row">
+        <div>
+          <label>Dinheiro (R$)</label>
+          <input id="dinheiro" type="number" step="0.01" placeholder="0.00" />
+          <div class="btns">
+            <button class="add" onclick="adicionarValor('dinheiro')">+</button>
+            <button class="sub" onclick="subtrairValor('dinheiro')">–</button>
+          </div>
+        </div>
+        <div>
+          <label>Cartão (R$)</label>
+          <input id="cartao" type="number" step="0.01" placeholder="0.00" />
+          <div class="btns">
+            <button class="add" onclick="adicionarValor('cartao')">+</button>
+            <button class="sub" onclick="subtrairValor('cartao')">–</button>
+          </div>
+        </div>
+        <div>
+          <label>Vale (R$)</label>
+          <input id="vale" type="number" step="0.01" placeholder="0.00" />
+          <div class="btns">
+            <button class="add" onclick="adicionarValor('vale')">+</button>
+            <button class="sub" onclick="subtrairValor('vale')">–</button>
+          </div>
+        </div>
+        <div>
+          <label>Pix (R$)</label>
+          <input id="pix" type="number" step="0.01" placeholder="0.00" />
+          <div class="btns">
+            <button class="add" onclick="adicionarValor('pix')">+</button>
+            <button class="sub" onclick="subtrairValor('pix')">–</button>
+          </div>
+        </div>
       </div>
+
+      <div class="totais" id="resumo"></div>
+
+      <button id="baixarPDF">Baixar PDF</button>
+      <button id="fecharTurno">Fechar Turno (Zerar)</button>
     </div>
-    <div>
-      <label>Cartão (R$)</label>
-      <input id="cartao" type="number" step="0.01" placeholder="0.00" />
-      <div class="btns">
-        <button class="add" onclick="adicionarValor('cartao')">+</button>
-        <button class="sub" onclick="subtrairValor('cartao')">–</button>
-      </div>
-    </div>
-    <div>
-      <label>Vale (R$)</label>
-      <input id="vale" type="number" step="0.01" placeholder="0.00" />
-      <div class="btns">
-        <button class="add" onclick="adicionarValor('vale')">+</button>
-        <button class="sub" onclick="subtrairValor('vale')">–</button>
-      </div>
-    </div>
-    <div>
-      <label>Pix (R$)</label>
-      <input id="pix" type="number" step="0.01" placeholder="0.00" />
-      <div class="btns">
-        <button class="add" onclick="adicionarValor('pix')">+</button>
-        <button class="sub" onclick="subtrairValor('pix')">–</button>
-      </div>
-    </div>
-  </div>
 
-  <div class="totais" id="resumo"></div>
+    <script>
+      // ======= Ajuste de data para o fuso horário do Brasil =======
+      function dataAtualBrasil() {
+        const agora = new Date();
+        // Obtém diferença de fuso (minutos) e converte para milissegundos
+        const offsetMs = agora.getTimezoneOffset() * 60000;
+        // Corrige para UTC-3 (horário de Brasília)
+        const brasil = new Date(
+          agora.getTime() - offsetMs - 3 * 60 * 60 * 1000
+        );
+        return brasil.toISOString().slice(0, 10);
+      }
+      const hoje = dataAtualBrasil(); // ✅ Agora a data será correta no Brasil 🇧🇷
+      // =============================================================
 
-  <button id="baixarPDF">Baixar PDF</button>
-  <button id="fecharTurno">Fechar Turno (Zerar)</button>
-</div>
+      let frentista = localStorage.getItem("frentista");
+      if (frentista) {
+        if (
+          !confirm(
+            `O frentista atual é "${frentista}". Continuar com este nome?`
+          )
+        ) {
+          frentista = prompt("Digite o novo nome do frentista:") || "Frentista";
+          localStorage.setItem("frentista", frentista);
+        }
+      } else {
+        frentista = prompt("Digite seu nome:") || "Frentista";
+        localStorage.setItem("frentista", frentista);
+      }
 
-<script>
-// ======= Ajuste de data para o fuso horário do Brasil =======
-function dataAtualBrasil() {
-  const agora = new Date();
-  // Obtém diferença de fuso (minutos) e converte para milissegundos
-  const offsetMs = agora.getTimezoneOffset() * 60000;
-  // Corrige para UTC-3 (horário de Brasília)
-  const brasil = new Date(agora.getTime() - offsetMs - (3 * 60 * 60 * 1000));
-  return brasil.toISOString().slice(0, 10);
-}
-const hoje = dataAtualBrasil(); // ✅ Agora a data será correta no Brasil 🇧🇷
-// =============================================================
+      const valores = {
+        dinheiro: parseFloat(localStorage.getItem("dinheiro")) || 0,
+        cartao: parseFloat(localStorage.getItem("cartao")) || 0,
+        vale: parseFloat(localStorage.getItem("vale")) || 0,
+        pix: parseFloat(localStorage.getItem("pix")) || 0,
+      };
 
-let frentista = localStorage.getItem('frentista');
-if(frentista){
-  if(!confirm(`O frentista atual é "${frentista}". Continuar com este nome?`)){
-    frentista = prompt("Digite o novo nome do frentista:") || "Frentista";
-    localStorage.setItem('frentista', frentista);
-  }
-}else{
-  frentista = prompt("Digite seu nome:") || "Frentista";
-  localStorage.setItem('frentista', frentista);
-}
+      const fmtBR = (v) =>
+        new Intl.NumberFormat("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        }).format(v);
 
-const valores = {
-  dinheiro: parseFloat(localStorage.getItem('dinheiro')) || 0,
-  cartao: parseFloat(localStorage.getItem('cartao')) || 0,
-  vale: parseFloat(localStorage.getItem('vale')) || 0,
-  pix: parseFloat(localStorage.getItem('pix')) || 0
-};
-
-const fmtBR = v => new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(v);
-
-function atualizarResumo(){
-  const total = valores.dinheiro + valores.cartao + valores.vale + valores.pix;
-  document.getElementById("resumo").innerHTML = `
+      function atualizarResumo() {
+        const total =
+          valores.dinheiro + valores.cartao + valores.vale + valores.pix;
+        document.getElementById("resumo").innerHTML = `
   <table>
-    <tr><td colspan="2" style="font-weight:bold; background:#ddd; text-align:center;">Fechamento de Caixa - ${hoje.split("-").reverse().join("/")}</td></tr>
+    <tr><td colspan="2" style="font-weight:bold; background:#ddd; text-align:center;">Fechamento de Caixa - ${hoje
+      .split("-")
+      .reverse()
+      .join("/")}</td></tr>
     <tr><td>Frentista:</td><td>${frentista}</td></tr>
     <tr><td>Dinheiro:</td><td>${fmtBR(valores.dinheiro)}</td></tr>
     <tr><td>Cartão:</td><td>${fmtBR(valores.cartao)}</td></tr>
@@ -154,69 +279,83 @@ function atualizarResumo(){
     <tr><td>Pix:</td><td>${fmtBR(valores.pix)}</td></tr>
     <tr><td>Total:</td><td style="color:#2e7d32;">${fmtBR(total)}</td></tr>
   </table>`;
-  for(let k in valores) localStorage.setItem(k,valores[k]);
-}
+        for (let k in valores) localStorage.setItem(k, valores[k]);
+      }
 
-function adicionarValor(tipo){
-  const val = parseFloat(document.getElementById(tipo).value)||0;
-  valores[tipo] += val;
-  document.getElementById(tipo).value="";
-  atualizarResumo();
-}
+      function adicionarValor(tipo) {
+        const val = parseFloat(document.getElementById(tipo).value) || 0;
+        valores[tipo] += val;
+        document.getElementById(tipo).value = "";
+        atualizarResumo();
+      }
 
-function subtrairValor(tipo){
-  const val = parseFloat(document.getElementById(tipo).value)||0;
-  valores[tipo] = Math.max(0,valores[tipo]-val);
-  document.getElementById(tipo).value="";
-  atualizarResumo();
-}
+      function subtrairValor(tipo) {
+        const val = parseFloat(document.getElementById(tipo).value) || 0;
+        valores[tipo] = Math.max(0, valores[tipo] - val);
+        document.getElementById(tipo).value = "";
+        atualizarResumo();
+      }
 
-document.getElementById("baixarPDF").addEventListener("click", ()=>{
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({unit:"pt",format:"a4"});
-  const total = valores.dinheiro + valores.cartao + valores.vale + valores.pix;
-  const dataFormatada = hoje.split("-").reverse().join("/");
+      document.getElementById("baixarPDF").addEventListener("click", () => {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ unit: "pt", format: "a4" });
+        const total =
+          valores.dinheiro + valores.cartao + valores.vale + valores.pix;
+        const dataFormatada = hoje.split("-").reverse().join("/");
 
-  const linhas = [
-    [{ content: `Fechamento de Caixa - ${dataFormatada}`, colSpan: 2, styles: { halign: 'center', fillColor: [240,240,240], fontStyle: 'bold' } }],
-    ["Frentista", frentista],
-    ["Dinheiro", fmtBR(valores.dinheiro)],
-    ["Cartão", fmtBR(valores.cartao)],
-    ["Vale", fmtBR(valores.vale)],
-    ["Pix", fmtBR(valores.pix)],
-    ["Total", fmtBR(total)]
-  ];
+        const linhas = [
+          [
+            {
+              content: `Fechamento de Caixa - ${dataFormatada}`,
+              colSpan: 2,
+              styles: {
+                halign: "center",
+                fillColor: [240, 240, 240],
+                fontStyle: "bold",
+              },
+            },
+          ],
+          ["Frentista", frentista],
+          ["Dinheiro", fmtBR(valores.dinheiro)],
+          ["Cartão", fmtBR(valores.cartao)],
+          ["Vale", fmtBR(valores.vale)],
+          ["Pix", fmtBR(valores.pix)],
+          ["Total", fmtBR(total)],
+        ];
 
-  doc.autoTable({
-    startY: 60,
-    body: linhas,
-    theme: "grid",
-    styles: {
-      halign: "center",
-      fontSize: 12,
-      cellPadding: 8,
-      fillColor: [255,255,255],
-      textColor: 0
-    },
-    columnStyles: {
-      0: { cellWidth: 230, fontStyle: "bold" },
-      1: { cellWidth: 230 }
-    },
-    margin: { left: (doc.internal.pageSize.getWidth() - 460) / 2 }
-  });
+        doc.autoTable({
+          startY: 60,
+          body: linhas,
+          theme: "grid",
+          styles: {
+            halign: "center",
+            fontSize: 12,
+            cellPadding: 8,
+            fillColor: [255, 255, 255],
+            textColor: 0,
+          },
+          columnStyles: {
+            0: { cellWidth: 230, fontStyle: "bold" },
+            1: { cellWidth: 230 },
+          },
+          margin: { left: (doc.internal.pageSize.getWidth() - 460) / 2 },
+        });
 
-  doc.save(`fechamento_${dataFormatada.replace(/\//g,"-")}.pdf`);
-});
+        doc.save(`fechamento_${dataFormatada.replace(/\//g, "-")}.pdf`);
+      });
 
-document.getElementById("fecharTurno").addEventListener("click", ()=>{
-  if(confirm("⚠️ Tem certeza que deseja fechar o turno e zerar todos os valores?")){
-    for(let k in valores) valores[k]=0;
-    atualizarResumo();
-    alert("Turno fechado e valores zerados.");
-  }
-});
-
-atualizarResumo();
-</script>
-</body>
+      document.getElementById("fecharTurno").addEventListener("click", () => {
+        if (
+          confirm(
+            "⚠️ Tem certeza que deseja fechar o turno e zerar todos os valores?"
+          )
+        ) {
+          for (let k in valores) valores[k] = 0;
+          atualizarResumo();
+          alert("Turno fechado e valores zerados.");
+        }
+      });
+      atualizarResumo();
+    </script>
+  </body>
 </html>
