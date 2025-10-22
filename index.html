@@ -90,12 +90,7 @@
 
       .add {
         background: #28a745;
-        width: 48%;
-      }
-
-      .sub {
-        background: #dc3545;
-        width: 48%;
+        width: 100%; /* Agora ocupa 100% da largura */
       }
 
       .row {
@@ -321,32 +316,36 @@
           <label>Dinheiro (R$)</label>
           <input id="dinheiro" type="number" step="0.01" placeholder="0.00" />
           <div class="btns">
-            <button class="add" onclick="adicionarValor('dinheiro')">+</button>
-            <button class="sub" onclick="subtrairValor('dinheiro')">–</button>
+            <button class="add" onclick="adicionarValor('dinheiro')">
+              Adicionar Valor
+            </button>
           </div>
         </div>
         <div>
           <label>Cartão (R$)</label>
           <input id="cartao" type="number" step="0.01" placeholder="0.00" />
           <div class="btns">
-            <button class="add" onclick="adicionarValor('cartao')">+</button>
-            <button class="sub" onclick="subtrairValor('cartao')">–</button>
+            <button class="add" onclick="adicionarValor('cartao')">
+              Adicionar Valor
+            </button>
           </div>
         </div>
         <div>
           <label>Vale (R$)</label>
           <input id="vale" type="number" step="0.01" placeholder="0.00" />
           <div class="btns">
-            <button class="add" onclick="adicionarValor('vale')">+</button>
-            <button class="sub" onclick="subtrairValor('vale')">–</button>
+            <button class="add" onclick="adicionarValor('vale')">
+              Adicionar Valor
+            </button>
           </div>
         </div>
         <div>
           <label>Pix (R$)</label>
           <input id="pix" type="number" step="0.01" placeholder="0.00" />
           <div class="btns">
-            <button class="add" onclick="adicionarValor('pix')">+</button>
-            <button class="sub" onclick="subtrairValor('pix')">–</button>
+            <button class="add" onclick="adicionarValor('pix')">
+              Adicionar Valor
+            </button>
           </div>
         </div>
       </div>
@@ -454,8 +453,14 @@
           minute: "2-digit",
         });
 
+        // CORREÇÃO ORTOGRÁFICA: Adicionar acento em "Cartão"
+        let tipoFormatado = tipo.charAt(0).toUpperCase() + tipo.slice(1);
+        if (tipoFormatado === "Cartao") {
+          tipoFormatado = "Cartão";
+        }
+
         historico.push({
-          tipo: tipo.charAt(0).toUpperCase() + tipo.slice(1),
+          tipo: tipoFormatado,
           valor: valor,
           operacao: operacao, // 'adicao' ou 'subtracao'
           hora: hora,
@@ -479,12 +484,21 @@
 
         // Reverter a operação no valor total
         if (item.operacao === "adicao") {
-          valores[item.tipo.toLowerCase()] = Math.max(
+          // CORREÇÃO: Converter tipo com acento de volta para sem acento
+          let tipoCorrigido = item.tipo.toLowerCase();
+          if (tipoCorrigido === "cartão") {
+            tipoCorrigido = "cartao";
+          }
+          valores[tipoCorrigido] = Math.max(
             0,
-            valores[item.tipo.toLowerCase()] - item.valor
+            valores[tipoCorrigido] - item.valor
           );
         } else if (item.operacao === "subtracao") {
-          valores[item.tipo.toLowerCase()] += item.valor;
+          let tipoCorrigido = item.tipo.toLowerCase();
+          if (tipoCorrigido === "cartão") {
+            tipoCorrigido = "cartao";
+          }
+          valores[tipoCorrigido] += item.valor;
         }
 
         // Remover do histórico
@@ -527,15 +541,7 @@
         atualizarResumo();
       }
 
-      function subtrairValor(tipo) {
-        const val = parseFloat(document.getElementById(tipo).value) || 0;
-        if (val > 0) {
-          valores[tipo] = Math.max(0, valores[tipo] - val);
-          adicionarAohistorico(tipo, val, "subtracao");
-        }
-        document.getElementById(tipo).value = "";
-        atualizarResumo();
-      }
+      // FUNÇÃO REMOVIDA: subtrairValor - não é mais necessária
 
       document.getElementById("baixarPDF").addEventListener("click", () => {
         const { jsPDF } = window.jspdf;
@@ -560,7 +566,7 @@
           ],
           ["Frentista", frentista],
           ["Dinheiro", fmtBR(valores.dinheiro)],
-          ["Cartão", fmtBR(valores.cartao)],
+          ["Cartão", fmtBR(valores.cartao)], // CORREÇÃO ORTOGRÁFICA NO PDF
           ["Vale", fmtBR(valores.vale)],
           ["Pix", fmtBR(valores.pix)],
           [
