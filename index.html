@@ -234,21 +234,22 @@
       }
 
       .lista-historico {
-        max-height: 200px;
+        max-height: 300px; /* Aumentado para mostrar mais itens */
         overflow-y: auto;
         border: 1px solid #e0e0e0;
         border-radius: 8px;
         background: white;
-        padding: 0 12px;
+        padding: 0 8px; /* Reduzido o padding lateral */
       }
 
       .item-historico {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 12px 8px;
+        padding: 10px 6px; /* Reduzido o padding */
         border-bottom: 1px solid #eee;
         font-size: 13px;
+        min-height: 44px; /* Altura mínima para toque fácil */
       }
 
       .item-historico:last-child {
@@ -257,20 +258,40 @@
 
       .info-historico {
         flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-width: 0; /* Permite que o texto quebre corretamente */
       }
 
       .tipo-historico {
         font-weight: 600;
         color: #0b63d4;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .valor-historico {
         font-weight: 600;
         color: #28a745;
+        white-space: nowrap;
       }
 
       .subtracao .valor-historico {
         color: #dc3545;
+      }
+
+      .detalhes-historico {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .hora-historico {
+        color: #666;
+        font-size: 11px;
+        white-space: nowrap;
       }
 
       .btn-remover {
@@ -278,15 +299,17 @@
         padding: 6px 10px;
         font-size: 11px;
         border-radius: 6px;
-        margin-left: 12px;
+        margin-left: 8px; /* Reduzido margin */
         font-weight: 500;
+        white-space: nowrap;
+        flex-shrink: 0; /* Impede que o botão encolha */
       }
 
       .sem-historico {
         text-align: center;
         color: #999;
         font-style: italic;
-        padding: 24px;
+        padding: 20px;
         font-size: 13px;
       }
 
@@ -338,12 +361,32 @@
 
         .item-historico {
           font-size: 12px;
-          padding: 10px 6px;
+          padding: 8px 4px; /* Mais compacto no mobile */
+          min-height: 40px;
         }
 
         .historico {
           padding: 12px;
           margin-top: 20px;
+        }
+
+        .lista-historico {
+          max-height: 250px; /* Altura ajustada para mobile */
+          padding: 0 6px;
+        }
+
+        .detalhes-historico {
+          gap: 6px;
+        }
+
+        .hora-historico {
+          font-size: 10px;
+        }
+
+        .btn-remover {
+          padding: 5px 8px;
+          font-size: 10px;
+          margin-left: 6px;
         }
 
         #baixarPDF,
@@ -352,6 +395,24 @@
           padding: 10px;
           font-size: 13px;
           margin-top: 12px;
+        }
+      }
+
+      /* Melhorias para telas muito pequenas */
+      @media (max-width: 360px) {
+        .item-historico {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 4px;
+        }
+
+        .btn-remover {
+          align-self: flex-end;
+          margin-left: 0;
+        }
+
+        .detalhes-historico {
+          width: 100%;
         }
       }
 
@@ -386,6 +447,25 @@
         100% {
           transform: rotate(360deg);
         }
+      }
+
+      /* Scrollbar personalizada */
+      .lista-historico::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .lista-historico::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+      }
+
+      .lista-historico::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 3px;
+      }
+
+      .lista-historico::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
       }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
@@ -490,7 +570,7 @@
       });
 
       // Verificar se já está instalado
-      if (window.matchMedia("(display-mode: standalone)").matches) {
+      if (window.matchMedia("(display-mode: standalone").matches) {
         installButton.style.display = "none";
       }
 
@@ -545,7 +625,8 @@
           return;
         }
 
-        const historicoRecente = historico.slice(-10).reverse();
+        // REMOVIDO O LIMITE - Mostra TODOS os itens do mais recente para o mais antigo
+        const historicoRecente = [...historico].reverse();
 
         lista.innerHTML = historicoRecente
           .map((item, index) => {
@@ -554,11 +635,13 @@
             return `
           <div class="item-historico ${classeOperacao}">
             <div class="info-historico">
-              <span class="tipo-historico">${item.tipo}</span>: 
-              <span class="valor-historico">${
-                item.operacao === "subtracao" ? "-" : "+"
-              } ${fmtBR(item.valor)}</span>
-              <small style="color: #666;"> - ${item.hora}</small>
+              <div class="detalhes-historico">
+                <span class="tipo-historico">${item.tipo}</span>
+                <span class="valor-historico">${
+                  item.operacao === "subtracao" ? "-" : "+"
+                } ${fmtBR(item.valor)}</span>
+                <span class="hora-historico">${item.hora}</span>
+              </div>
             </div>
             <button class="btn-remover" onclick="removerDoHistorico(${
               historico.length - 1 - index
@@ -591,10 +674,7 @@
           timestamp: agora.getTime(),
         });
 
-        if (historico.length > 50) {
-          historico = historico.slice(-50);
-        }
-
+        // REMOVIDO O LIMITE DE 50 ITENS - Agora armazena todos
         localStorage.setItem("historico", JSON.stringify(historico));
         atualizarHistorico();
       }
