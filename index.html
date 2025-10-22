@@ -44,7 +44,7 @@
         display: flex;
         justify-content: center;
         align-items: flex-start;
-        height: 100vh;
+        min-height: 100vh;
         color: #222;
         padding: 20px 0;
         overflow-y: auto;
@@ -66,6 +66,7 @@
         flex-direction: column;
         box-sizing: border-box;
         margin: auto;
+        min-height: auto;
       }
 
       h1 {
@@ -223,6 +224,7 @@
         border-radius: 10px;
         padding: 16px;
         background: #fafafa;
+        margin-bottom: 20px; /* ESPAÇO EXTRA NO FINAL */
       }
 
       .historico h3 {
@@ -234,22 +236,22 @@
       }
 
       .lista-historico {
-        max-height: 300px; /* Aumentado para mostrar mais itens */
+        max-height: 300px; /* Altura aumentada */
         overflow-y: auto;
         border: 1px solid #e0e0e0;
         border-radius: 8px;
         background: white;
-        padding: 0 8px; /* Reduzido o padding lateral */
+        padding: 0 12px;
       }
 
       .item-historico {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 10px 6px; /* Reduzido o padding */
+        padding: 12px 8px;
         border-bottom: 1px solid #eee;
         font-size: 13px;
-        min-height: 44px; /* Altura mínima para toque fácil */
+        min-height: 44px; /* Altura mínima para toque */
       }
 
       .item-historico:last-child {
@@ -260,21 +262,16 @@
         flex: 1;
         display: flex;
         flex-direction: column;
-        min-width: 0; /* Permite que o texto quebre corretamente */
       }
 
       .tipo-historico {
         font-weight: 600;
         color: #0b63d4;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
       }
 
       .valor-historico {
         font-weight: 600;
         color: #28a745;
-        white-space: nowrap;
       }
 
       .subtracao .valor-historico {
@@ -291,7 +288,6 @@
       .hora-historico {
         color: #666;
         font-size: 11px;
-        white-space: nowrap;
       }
 
       .btn-remover {
@@ -299,7 +295,7 @@
         padding: 6px 10px;
         font-size: 11px;
         border-radius: 6px;
-        margin-left: 8px; /* Reduzido margin */
+        margin-left: 12px;
         font-weight: 500;
         white-space: nowrap;
         flex-shrink: 0; /* Impede que o botão encolha */
@@ -309,29 +305,51 @@
         text-align: center;
         color: #999;
         font-style: italic;
-        padding: 20px;
+        padding: 24px;
         font-size: 13px;
+      }
+
+      /* SCROLLBAR PERSONALIZADA */
+      .lista-historico::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .lista-historico::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+      }
+
+      .lista-historico::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 3px;
+      }
+
+      .lista-historico::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
       }
 
       @media (max-width: 480px) {
         body {
           padding: 10px 0;
           align-items: flex-start;
-          /* Prevenir bounce scroll no iOS */
-          position: fixed;
-          width: 100%;
-          height: 100%;
+          height: 100vh;
+          overflow: hidden;
         }
 
         .card {
           padding: 16px;
-          max-height: calc(100vh - 20px);
+          max-height: calc(100vh - 40px); /* Altura máxima com margem */
           overflow-y: auto;
+          margin-bottom: 20px; /* Espaço extra no mobile */
         }
 
         h1 {
           font-size: 20px;
           margin-bottom: 16px;
+        }
+
+        .row {
+          gap: 12px;
         }
 
         input {
@@ -359,20 +377,21 @@
           font-size: 14px !important;
         }
 
-        .item-historico {
-          font-size: 12px;
-          padding: 8px 4px; /* Mais compacto no mobile */
-          min-height: 40px;
-        }
-
         .historico {
           padding: 12px;
           margin-top: 20px;
+          margin-bottom: 30px; /* MAIS ESPAÇO NO MOBILE */
         }
 
         .lista-historico {
           max-height: 250px; /* Altura ajustada para mobile */
-          padding: 0 6px;
+          padding: 0 8px;
+        }
+
+        .item-historico {
+          font-size: 12px;
+          padding: 10px 6px;
+          min-height: 40px;
         }
 
         .detalhes-historico {
@@ -386,7 +405,7 @@
         .btn-remover {
           padding: 5px 8px;
           font-size: 10px;
-          margin-left: 6px;
+          margin-left: 8px;
         }
 
         #baixarPDF,
@@ -400,19 +419,46 @@
 
       /* Melhorias para telas muito pequenas */
       @media (max-width: 360px) {
+        .card {
+          padding: 12px;
+        }
+
+        .row {
+          grid-template-columns: 1fr;
+          gap: 10px;
+        }
+
         .item-historico {
           flex-direction: column;
           align-items: flex-start;
-          gap: 4px;
+          gap: 6px;
+          padding: 8px 4px;
         }
 
         .btn-remover {
           align-self: flex-end;
           margin-left: 0;
+          width: auto;
         }
 
         .detalhes-historico {
           width: 100%;
+          justify-content: space-between;
+        }
+      }
+
+      /* Ajustes para quando o teclado virtual aparece */
+      @media (max-height: 500px) {
+        body {
+          align-items: flex-start;
+        }
+
+        .card {
+          max-height: calc(100vh - 20px);
+        }
+
+        .lista-historico {
+          max-height: 150px;
         }
       }
 
@@ -447,25 +493,6 @@
         100% {
           transform: rotate(360deg);
         }
-      }
-
-      /* Scrollbar personalizada */
-      .lista-historico::-webkit-scrollbar {
-        width: 6px;
-      }
-
-      .lista-historico::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 3px;
-      }
-
-      .lista-historico::-webkit-scrollbar-thumb {
-        background: #c1c1c1;
-        border-radius: 3px;
-      }
-
-      .lista-historico::-webkit-scrollbar-thumb:hover {
-        background: #a8a8a8;
       }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
@@ -570,7 +597,7 @@
       });
 
       // Verificar se já está instalado
-      if (window.matchMedia("(display-mode: standalone").matches) {
+      if (window.matchMedia("(display-mode: standalone)").matches) {
         installButton.style.display = "none";
       }
 
@@ -625,7 +652,7 @@
           return;
         }
 
-        // REMOVIDO O LIMITE - Mostra TODOS os itens do mais recente para o mais antigo
+        // Mostrar TODOS os itens (sem limite)
         const historicoRecente = [...historico].reverse();
 
         lista.innerHTML = historicoRecente
@@ -674,7 +701,7 @@
           timestamp: agora.getTime(),
         });
 
-        // REMOVIDO O LIMITE DE 50 ITENS - Agora armazena todos
+        // Sem limite de itens no histórico
         localStorage.setItem("historico", JSON.stringify(historico));
         atualizarHistorico();
       }
