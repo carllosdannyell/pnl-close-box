@@ -21,35 +21,37 @@
         background: #f6fbff;
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: flex-start;
         height: 100vh;
         color: #222;
+        padding: 20px 0;
+        overflow-y: auto;
       }
 
       .card {
         background: #fff;
         border-radius: 12px;
-        padding: 16px;
+        padding: 24px;
         width: 95%;
         max-width: 650px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        max-height: 100vh;
         box-sizing: border-box;
+        margin: auto;
       }
 
       h1 {
         color: #0b63d4;
-        font-size: 20px;
+        font-size: 22px;
         text-align: center;
-        margin-bottom: 12px;
+        margin-bottom: 20px;
+        font-weight: 600;
       }
 
       label {
         display: block;
-        margin-bottom: 4px;
+        margin-bottom: 8px;
         color: #333;
         font-weight: 500;
         font-size: 14px;
@@ -57,25 +59,33 @@
 
       input {
         width: 100%;
-        padding: 8px;
-        border-radius: 6px;
+        padding: 10px;
+        border-radius: 8px;
         border: 1px solid #ddd;
-        font-size: 13px;
+        font-size: 14px;
         box-sizing: border-box;
+        transition: border-color 0.2s;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: #0b63d4;
       }
 
       button {
-        padding: 8px 10px;
+        padding: 10px 12px;
         border: none;
-        border-radius: 6px;
+        border-radius: 8px;
         color: #fff;
         cursor: pointer;
-        font-size: 12px;
+        font-size: 13px;
         transition: 0.2s;
+        font-weight: 500;
       }
 
       button:hover {
         opacity: 0.9;
+        transform: translateY(-1px);
       }
 
       .add {
@@ -91,21 +101,23 @@
       .row {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 12px;
-        margin-top: 12px;
+        gap: 16px;
+        margin-top: 8px;
       }
 
       .btns {
         display: flex;
         justify-content: space-between;
-        margin-top: 4px;
+        margin-top: 8px;
+        gap: 8px;
       }
 
       .totais {
         background: #eef6ff;
-        padding: 10px;
-        border-radius: 8px;
-        margin-top: 12px;
+        padding: 16px;
+        border-radius: 10px;
+        margin-top: 20px;
+        border: 1px solid #d0e3ff;
       }
 
       table {
@@ -114,13 +126,14 @@
       }
 
       td {
-        padding: 4px 0;
-        font-size: 13px;
+        padding: 10px 8px;
+        font-size: 14px;
       }
 
       td:first-child {
         text-align: left;
         color: #555;
+        font-weight: 500;
       }
 
       td:last-child {
@@ -129,18 +142,31 @@
         color: #222;
       }
 
+      .cabecalho-total {
+        background: #0b63d4 !important;
+        color: white !important;
+        font-size: 15px !important;
+        padding: 12px 8px !important;
+        width: 100%;
+        margin-top: 16px;
+        border-radius: 8px;
+        font-weight: 600;
+      }
+
       #baixarPDF,
       #fecharTurno {
         background: #0b63d4;
         width: 100%;
-        margin-top: 8px;
-        padding: 10px;
-        font-size: 13px;
-        border-radius: 6px;
+        margin-top: 16px;
+        padding: 12px;
+        font-size: 14px;
+        border-radius: 8px;
+        font-weight: 600;
       }
 
       #fecharTurno {
-        background: #111;
+        background: #2c3e50;
+        margin-top: 12px;
       }
 
       .erro {
@@ -150,24 +176,135 @@
         margin-top: 4px;
       }
 
+      /* ESTILO ATUALIZADO PARA O HISTÓRICO */
+      .historico {
+        margin-top: 24px;
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        padding: 16px;
+        background: #fafafa;
+      }
+
+      .historico h3 {
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 12px;
+        text-align: center;
+        font-weight: 600;
+      }
+
+      .lista-historico {
+        max-height: 200px;
+        overflow-y: auto;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        background: white;
+        padding: 0 12px;
+      }
+
+      .item-historico {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 8px;
+        border-bottom: 1px solid #eee;
+        font-size: 13px;
+      }
+
+      .item-historico:last-child {
+        border-bottom: none;
+      }
+
+      .info-historico {
+        flex: 1;
+      }
+
+      .tipo-historico {
+        font-weight: 600;
+        color: #0b63d4;
+      }
+
+      .valor-historico {
+        font-weight: 600;
+        color: #28a745;
+      }
+
+      .subtracao .valor-historico {
+        color: #dc3545;
+      }
+
+      .btn-remover {
+        background: #dc3545;
+        padding: 6px 10px;
+        font-size: 11px;
+        border-radius: 6px;
+        margin-left: 12px;
+        font-weight: 500;
+      }
+
+      .sem-historico {
+        text-align: center;
+        color: #999;
+        font-style: italic;
+        padding: 24px;
+        font-size: 13px;
+      }
+
       @media (max-width: 480px) {
+        body {
+          padding: 10px 0;
+          align-items: flex-start;
+        }
+
+        .card {
+          padding: 16px;
+        }
+
         h1 {
-          font-size: 18px;
+          font-size: 20px;
+          margin-bottom: 16px;
         }
 
         input {
-          padding: 6px;
-          font-size: 12px;
+          padding: 8px;
+          font-size: 13px;
         }
 
         .btns button {
-          font-size: 11px;
-          padding: 6px;
+          font-size: 12px;
+          padding: 8px;
         }
 
         .totais {
-          padding: 8px;
+          padding: 12px;
+          margin-top: 16px;
+        }
+
+        td {
+          padding: 8px 6px;
+          font-size: 13px;
+        }
+
+        .cabecalho-total {
+          padding: 10px 6px !important;
+          font-size: 14px !important;
+        }
+
+        .item-historico {
           font-size: 12px;
+          padding: 10px 6px;
+        }
+
+        .historico {
+          padding: 12px;
+          margin-top: 20px;
+        }
+
+        #baixarPDF,
+        #fecharTurno {
+          padding: 10px;
+          font-size: 13px;
+          margin-top: 12px;
         }
       }
     </style>
@@ -218,6 +355,12 @@
 
       <button id="baixarPDF">Baixar PDF</button>
       <button id="fecharTurno">Fechar Turno (Zerar)</button>
+
+      <!-- HISTÓRICO AGORA FICA ABAIXO DOS BOTÕES -->
+      <div class="historico">
+        <h3>Últimos Valores Adicionados</h3>
+        <div class="lista-historico" id="lista-historico"></div>
+      </div>
     </div>
 
     <script>
@@ -257,18 +400,108 @@
         pix: parseFloat(localStorage.getItem("pix")) || 0,
       };
 
+      // Array para armazenar o histórico de operações
+      let historico = JSON.parse(localStorage.getItem("historico")) || [];
+
       const fmtBR = (v) =>
         new Intl.NumberFormat("pt-BR", {
           style: "currency",
           currency: "BRL",
         }).format(v);
 
+      // FUNÇÃO: Atualizar a lista de histórico na tela
+      function atualizarHistorico() {
+        const lista = document.getElementById("lista-historico");
+
+        if (historico.length === 0) {
+          lista.innerHTML =
+            '<div class="sem-historico">Nenhum valor adicionado ainda</div>';
+          return;
+        }
+
+        // Mostrar apenas os últimos 10 itens (do mais recente para o mais antigo)
+        const historicoRecente = historico.slice(-10).reverse();
+
+        lista.innerHTML = historicoRecente
+          .map((item, index) => {
+            const classeOperacao =
+              item.operacao === "subtracao" ? "subtracao" : "";
+            return `
+          <div class="item-historico ${classeOperacao}">
+            <div class="info-historico">
+              <span class="tipo-historico">${item.tipo}</span>: 
+              <span class="valor-historico">${
+                item.operacao === "subtracao" ? "-" : "+"
+              } ${fmtBR(item.valor)}</span>
+              <small style="color: #666;"> - ${item.hora}</small>
+            </div>
+            <button class="btn-remover" onclick="removerDoHistorico(${
+              historico.length - 1 - index
+            })">
+              Remover
+            </button>
+          </div>
+        `;
+          })
+          .join("");
+      }
+
+      // FUNÇÃO: Adicionar item ao histórico
+      function adicionarAohistorico(tipo, valor, operacao) {
+        const agora = new Date();
+        const hora = agora.toLocaleTimeString("pt-BR", {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+
+        historico.push({
+          tipo: tipo.charAt(0).toUpperCase() + tipo.slice(1),
+          valor: valor,
+          operacao: operacao, // 'adicao' ou 'subtracao'
+          hora: hora,
+          timestamp: agora.getTime(),
+        });
+
+        // Manter apenas os últimos 50 itens no histórico
+        if (historico.length > 50) {
+          historico = historico.slice(-50);
+        }
+
+        localStorage.setItem("historico", JSON.stringify(historico));
+        atualizarHistorico();
+      }
+
+      // FUNÇÃO: Remover item do histórico e ajustar os valores
+      function removerDoHistorico(index) {
+        if (index < 0 || index >= historico.length) return;
+
+        const item = historico[index];
+
+        // Reverter a operação no valor total
+        if (item.operacao === "adicao") {
+          valores[item.tipo.toLowerCase()] = Math.max(
+            0,
+            valores[item.tipo.toLowerCase()] - item.valor
+          );
+        } else if (item.operacao === "subtracao") {
+          valores[item.tipo.toLowerCase()] += item.valor;
+        }
+
+        // Remover do histórico
+        historico.splice(index, 1);
+        localStorage.setItem("historico", JSON.stringify(historico));
+
+        // Atualizar a tela
+        atualizarResumo();
+        atualizarHistorico();
+      }
+
       function atualizarResumo() {
         const total =
           valores.dinheiro + valores.cartao + valores.vale + valores.pix;
         document.getElementById("resumo").innerHTML = `
   <table>
-    <tr><td colspan="2" style="font-weight:bold; background:#ddd; text-align:center;">Fechamento de Caixa - ${hoje
+    <tr><td colspan="2" style="text-align: center;" class="cabecalho-total">Resultado Parcial - ${hoje
       .split("-")
       .reverse()
       .join("/")}</td></tr>
@@ -277,21 +510,29 @@
     <tr><td>Cartão:</td><td>${fmtBR(valores.cartao)}</td></tr>
     <tr><td>Vale:</td><td>${fmtBR(valores.vale)}</td></tr>
     <tr><td>Pix:</td><td>${fmtBR(valores.pix)}</td></tr>
-    <tr><td>Total:</td><td style="color:#2e7d32;">${fmtBR(total)}</td></tr>
+    <tr><td>Total:</td><td style="color:#2e7d32; font-size:15px;">${fmtBR(
+      total
+    )}</td></tr>
   </table>`;
         for (let k in valores) localStorage.setItem(k, valores[k]);
       }
 
       function adicionarValor(tipo) {
         const val = parseFloat(document.getElementById(tipo).value) || 0;
-        valores[tipo] += val;
+        if (val > 0) {
+          valores[tipo] += val;
+          adicionarAohistorico(tipo, val, "adicao");
+        }
         document.getElementById(tipo).value = "";
         atualizarResumo();
       }
 
       function subtrairValor(tipo) {
         const val = parseFloat(document.getElementById(tipo).value) || 0;
-        valores[tipo] = Math.max(0, valores[tipo] - val);
+        if (val > 0) {
+          valores[tipo] = Math.max(0, valores[tipo] - val);
+          adicionarAohistorico(tipo, val, "subtracao");
+        }
         document.getElementById(tipo).value = "";
         atualizarResumo();
       }
@@ -310,8 +551,10 @@
               colSpan: 2,
               styles: {
                 halign: "center",
-                fillColor: [240, 240, 240],
+                fillColor: [11, 99, 212], // Azul mais escuro
+                textColor: [255, 255, 255], // Texto branco
                 fontStyle: "bold",
+                fontSize: 14,
               },
             },
           ],
@@ -320,7 +563,23 @@
           ["Cartão", fmtBR(valores.cartao)],
           ["Vale", fmtBR(valores.vale)],
           ["Pix", fmtBR(valores.pix)],
-          ["Total", fmtBR(total)],
+          [
+            {
+              content: "Total",
+              styles: {
+                fontStyle: "bold",
+                fillColor: [240, 240, 240], // Cinza claro
+              },
+            },
+            {
+              content: fmtBR(total),
+              styles: {
+                fontStyle: "bold",
+                fillColor: [240, 240, 240], // Cinza claro
+                textColor: [46, 125, 50], // Verde escuro
+              },
+            },
+          ],
         ];
 
         doc.autoTable({
@@ -330,16 +589,45 @@
           styles: {
             halign: "center",
             fontSize: 12,
-            cellPadding: 8,
+            cellPadding: 10,
             fillColor: [255, 255, 255],
             textColor: 0,
+            lineColor: [200, 200, 200],
+            lineWidth: 0.5,
           },
           columnStyles: {
-            0: { cellWidth: 230, fontStyle: "bold" },
-            1: { cellWidth: 230 },
+            0: {
+              cellWidth: 180, // Coluna mais estreita
+              fontStyle: "bold",
+              halign: "left",
+              fillColor: [250, 250, 250], // Fundo levemente cinza
+            },
+            1: {
+              cellWidth: 180, // Coluna mais estreita
+              halign: "right",
+              fillColor: [255, 255, 255], // Fundo branco
+            },
           },
-          margin: { left: (doc.internal.pageSize.getWidth() - 460) / 2 },
+          margin: {
+            left: (doc.internal.pageSize.getWidth() - 360) / 2, // Centralizado com largura menor
+            right: (doc.internal.pageSize.getWidth() - 360) / 2,
+          },
+          tableLineWidth: 0.5,
+          tableLineColor: [200, 200, 200],
         });
+
+        // Adicionar cabeçalho personalizado
+        doc.setFontSize(20);
+        doc.setFont("helvetica", "bold");
+        doc.setTextColor(11, 99, 212);
+        doc.text(
+          "Relatório de Fechamento",
+          doc.internal.pageSize.getWidth() / 2,
+          40,
+          {
+            align: "center",
+          }
+        );
 
         doc.save(`fechamento_${dataFormatada.replace(/\//g, "-")}.pdf`);
       });
@@ -351,11 +639,17 @@
           )
         ) {
           for (let k in valores) valores[k] = 0;
+          historico = [];
+          localStorage.removeItem("historico");
           atualizarResumo();
+          atualizarHistorico();
           alert("Turno fechado e valores zerados.");
         }
       });
+
+      // Inicializar a aplicação
       atualizarResumo();
+      atualizarHistorico();
     </script>
   </body>
 </html>
