@@ -607,10 +607,9 @@
       // ======= AJUSTE DE DATA =======
       function dataAtualBrasil() {
         const agora = new Date();
+        // Remove apenas o offset do fuso horário, sem subtrair horas extras
         const offsetMs = agora.getTimezoneOffset() * 60000;
-        const brasil = new Date(
-          agora.getTime() - offsetMs - 3 * 60 * 60 * 1000
-        );
+        const brasil = new Date(agora.getTime() - offsetMs);
         return brasil.toISOString().slice(0, 10);
       }
       const hoje = dataAtualBrasil();
